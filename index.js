@@ -73,6 +73,20 @@ bot.once("spawn", () => {
         }
 
         bot.pathfinder.setGoal(new GoalNear(x, y, z, 1));
+      } else if (command_message[0] === "стой") {
+        bot.pathfinder.stop();
+      } else if (command_message[0] === "инфо") {
+        if (command_message[1] === "привет") {
+          bot.chat("Привет, " + username);
+        } else if (command_message[1] === "координаты") {
+          bot.chat(
+            `X: ${bot.entity.position.x} Y: ${bot.entity.position.y} Z: ${bot.entity.position.z}`
+          );
+        } else if (command_message[1] === "путь") {
+          bot.chat(
+            `Движение: ${bot.pathfinder.isMoving()}, Копание: ${bot.pathfinder.isMining()}, Строительство: ${bot.pathfinder.isBuilding()}`
+          );
+        }
       }
     }
   });
