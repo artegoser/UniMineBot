@@ -2,7 +2,7 @@ const mineflayer = require("mineflayer");
 const {
   pathfinder,
   Movements,
-  goals: { GoalNear },
+  goals: { GoalNear, GoalBlock, GoalXZ },
 } = require("mineflayer-pathfinder");
 require("dotenv").config();
 
@@ -59,10 +59,17 @@ bot.once("spawn", () => {
           z -= Number(command_message[2]);
         } else if (command_message[1] === "вправо") {
           z += Number(command_message[2]);
-        } else if (command_message[1] === "координаты") {
+        } else if (command_message[1] === "xyz") {
           x = Number(command_message[2]);
           y = Number(command_message[3]);
           z = Number(command_message[4]);
+
+          return bot.pathfinder.setGoal(new GoalBlock(x, y, z));
+        } else if (command_message[1] === "xz") {
+          x = Number(command_message[2]);
+          z = Number(command_message[3]);
+
+          return bot.pathfinder.setGoal(new GoalXZ(x, z));
         }
 
         bot.pathfinder.setGoal(new GoalNear(x, y, z, 1));
