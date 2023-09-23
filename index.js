@@ -41,9 +41,7 @@ bot.once("spawn", () => {
         }
         const { x: playerX, y: playerY, z: playerZ } = target.position;
 
-        bot.pathfinder.setGoal(
-          new GoalNear(playerX, playerY, playerZ, RANGE_GOAL)
-        );
+        bot.pathfinder.setGoal(new GoalNear(playerX, playerY, playerZ, 1));
       }
     }
   });
