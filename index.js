@@ -21,12 +21,15 @@ bot.once("spawn", () => {
   bot.pathfinder.setMovements(defaultMove);
 
   bot.on("chat", (username, message) => {
-    if (username === bot.username) return;
-    if (username !== process.env.OWNER) return;
+    if (username === bot.username || username !== process.env.OWNER) {
+      return;
+    }
 
     if (message.toLowerCase().startsWith(process.env.USER_NAME.toLowerCase())) {
-      if (username !== process.env.OWNER)
-        return bot.chat("Я слушаю только " + process.env.OWNER);
+      if (username !== process.env.OWNER) {
+        bot.chat("Я слушаю только " + process.env.OWNER);
+        return;
+      }
 
       let command_message = message
         .replace(process.env.USER_NAME, "")
@@ -35,22 +38,22 @@ bot.once("spawn", () => {
 
       if (command_message[0] === "иди") {
         let x, y, z;
-
-        x = bot.entity.position.x;
-        y = bot.entity.position.y;
-        z = bot.entity.position.z;
+        const { position } = bot.entity;
+        x = position.x;
+        y = position.y;
+        z = position.z;
 
         if (command_message[1] === "сюда" || command_message[1] === "к") {
-          const target =
+          const targetPosition =
             bot.players[command_message[2] ? command_message[2] : username]
-              ?.entity;
-          if (!target) {
+              ?.entity?.position;
+          if (!targetPosition) {
             bot.chat("Не могу найти тебя.");
             return;
           }
-          x = target.position.x;
-          y = target.position.y;
-          z = target.position.z;
+          x = targetPosition.x;
+          y = targetPosition.y;
+          z = targetPosition.z;
         } else if (command_message[1] === "вперед") {
           x += Number(command_message[2]);
         } else if (command_message[1] === "назад") {
@@ -64,12 +67,14 @@ bot.once("spawn", () => {
           y = Number(command_message[3]);
           z = Number(command_message[4]);
 
-          return bot.pathfinder.setGoal(new GoalBlock(x, y, z));
+          bot.pathfinder.setGoal(new GoalBlock(x, y, z));
+          return;
         } else if (command_message[1] === "xz") {
           x = Number(command_message[2]);
           z = Number(command_message[3]);
 
-          return bot.pathfinder.setGoal(new GoalXZ(x, z));
+          bot.pathfinder.setGoal(new GoalXZ(x, z));
+          return;
         }
 
         bot.pathfinder.setGoal(new GoalNear(x, y, z, 1));
@@ -79,9 +84,8 @@ bot.once("spawn", () => {
         if (command_message[1] === "привет") {
           bot.chat("Привет, " + username);
         } else if (command_message[1] === "координаты") {
-          bot.chat(
-            `X: ${bot.entity.position.x} Y: ${bot.entity.position.y} Z: ${bot.entity.position.z}`
-          );
+          const { position } = bot.entity;
+          bot.chat(`X: ${position.x} Y: ${position.y} Z: ${position.z}`);
         } else if (command_message[1] === "путь") {
           bot.chat(
             `Движение: ${bot.pathfinder.isMoving()}, Копание: ${bot.pathfinder.isMining()}, Строительство: ${bot.pathfinder.isBuilding()}`
