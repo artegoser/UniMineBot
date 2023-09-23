@@ -18,6 +18,7 @@ bot.loadPlugin(pathfinder);
 
 bot.once("spawn", () => {
   const defaultMove = new Movements(bot);
+  defaultMove.canDig = false;
   bot.pathfinder.setMovements(defaultMove);
 
   bot.on("chat", (username, message) => {
@@ -33,13 +34,37 @@ bot.once("spawn", () => {
         .trim()
         .split(" ");
 
-      if (command_message[0] === "сюда") {
-        const target = bot.players[username]?.entity;
-        if (!target) {
-          bot.chat("Не могу найти тебя.");
-          return;
+      if (command_message[0] === "двигайся") {
+        let x, y, z;
+
+        x = bot.entity.position.x;
+        y = bot.entity.position.y;
+        z = bot.entity.position.z;
+
+        if (command_message[1] === "сюда" || command_message[1] === "к") {
+          const target =
+            bot.players[command_message[2] ? command_message[2] : username]
+              ?.entity;
+          if (!target) {
+            bot.chat("Не могу найти тебя.");
+            return;
+          }
+          x = target.position.x;
+          y = target.position.y;
+          z = target.position.z;
+        } else if (command_message[1] === "вперед") {
+          x += Number(command_message[2]);
+        } else if (command_message[1] === "назад") {
+          x -= Number(command_message[2]);
+        } else if (command_message[1] === "влево") {
+          z -= Number(command_message[2]);
+        } else if (command_message[1] === "вправо") {
+          z += Number(command_message[2]);
+        } else if (command_message[1] === "координаты") {
+          x = Number(command_message[2]);
+          y = Number(command_message[3]);
+          z = Number(command_message[4]);
         }
-        const { x: playerX, y: playerY, z: playerZ } = target.position;
 
         bot.pathfinder.setGoal(new GoalNear(playerX, playerY, playerZ, 1));
       }
@@ -51,9 +76,8 @@ bot.once("spawn", () => {
 
 bot.on("message", (message) => {
   console.log(message.toAnsi());
-  if (message === "Successful login!") mineflayerViewer(bot, { port: 80 });
+  mineflayerViewer(bot, { port: 80 });
 });
 
-// Log errors and kick reasons:
 bot.on("kicked", console.log);
 bot.on("error", console.log);
