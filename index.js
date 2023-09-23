@@ -46,7 +46,6 @@ bot.once("spawn", () => {
         );
       }
     }
-    return bot.chat("Дарова");
   });
 
   bot.chat(process.env.INITIAL_COMMAND);
