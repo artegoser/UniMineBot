@@ -1,5 +1,4 @@
 const mineflayer = require("mineflayer");
-const { mineflayer: mineflayerViewer } = require("prismarine-viewer");
 const {
   pathfinder,
   Movements,
@@ -76,7 +75,6 @@ bot.once("spawn", () => {
 
 bot.on("message", (message) => {
   console.log(message.toAnsi());
-  mineflayerViewer(bot, { port: 80 });
 });
 
 bot.on("kicked", console.log);

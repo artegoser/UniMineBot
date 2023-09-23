@@ -2,8 +2,7 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "mineflayer": "^4.14.0",
-    "mineflayer-pathfinder": "^2.4.5",
-    "prismarine-viewer": "^1.25.0"
+    "mineflayer-pathfinder": "^2.4.5"
   },
   "name": "uniminebot",
   "version": "1.0.0",
