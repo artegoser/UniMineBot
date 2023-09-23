@@ -4,6 +4,7 @@ const {
   Movements,
   goals: { GoalNear, GoalBlock, GoalXZ },
 } = require("mineflayer-pathfinder");
+
 require("dotenv").config();
 
 const bot = mineflayer.createBot({
@@ -14,11 +15,15 @@ const bot = mineflayer.createBot({
 });
 
 bot.loadPlugin(pathfinder);
+bot.loadPlugin(require("mineflayer-auto-eat").plugin);
+bot.loadPlugin(require("mineflayer-tool").plugin);
+bot.loadPlugin(require("mineflayer-collectblock").plugin);
 
 bot.once("spawn", () => {
   const defaultMove = new Movements(bot);
   defaultMove.canDig = false;
   bot.pathfinder.setMovements(defaultMove);
+  const mcData = require("minecraft-data")(bot.version);
 
   bot.on("chat", (username, message) => {
     if (username === bot.username || username !== process.env.OWNER) {
@@ -91,6 +96,8 @@ bot.once("spawn", () => {
             `Движение: ${bot.pathfinder.isMoving()}, Копание: ${bot.pathfinder.isMining()}, Строительство: ${bot.pathfinder.isBuilding()}`
           );
         }
+      } else if (command_message[0] === "копай") {
+        collectBLock(command_message[1], mcData, command_message[2]);
       }
     }
   });
@@ -104,3 +111,35 @@ bot.on("message", (message) => {
 
 bot.on("kicked", console.log);
 bot.on("error", console.log);
+
+async function collectBLock(name, data, count = 16) {
+  const block = data.blocksByName[name]?.id;
+  if (!block) return bot.chat(`Не могу найти блок ${name}`);
+
+  const blocks = bot.findBlocks({
+    matching: block,
+    maxDistance: 64,
+    count,
+  });
+
+  if (blocks.length === 0) {
+    bot.chat("Я не могу найти поблизости такие блоки");
+    return;
+  }
+
+  const targets = [];
+  for (let i = 0; i < Math.min(blocks.length, count); i++) {
+    targets.push(bot.blockAt(blocks[i]));
+  }
+
+  bot.chat(`Найдено ${targets.length} ${name}`);
+
+  try {
+    bot.chat("Начинаю копать");
+    await bot.collectBlock.collect(targets);
+    bot.chat("Готово");
+  } catch (err) {
+    bot.chat("Ошибка");
+    console.log(err);
+  }
+}
