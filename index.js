@@ -33,7 +33,7 @@ bot.once("spawn", () => {
         .trim()
         .split(" ");
 
-      if (command_message[0] === "двигайся") {
+      if (command_message[0] === "иди") {
         let x, y, z;
 
         x = bot.entity.position.x;
@@ -65,7 +65,7 @@ bot.once("spawn", () => {
           z = Number(command_message[4]);
         }
 
-        bot.pathfinder.setGoal(new GoalNear(playerX, playerY, playerZ, 1));
+        bot.pathfinder.setGoal(new GoalNear(x, y, z, 1));
       }
     }
   });
