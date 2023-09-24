@@ -20,6 +20,13 @@ emmiter.on("инфо", require("./modules/info"));
 emmiter.on("копай", require("./modules/dig"));
 emmiter.on("порешай", require("./modules/math"));
 
+emmiter.on("pos1", ({ bot, username }) => {
+  bot.pos1 = bot.players[username].entity.position;
+});
+emmiter.on("pos2", ({ bot, username }) => {
+  bot.pos2 = bot.players[username].entity.position;
+});
+
 bot.loadPlugin(pathfinder);
 bot.loadPlugin(require("mineflayer-auto-eat").plugin);
 bot.loadPlugin(require("mineflayer-tool").plugin);

@@ -1,7 +1,7 @@
 const axios = require("axios");
 const process = require("process");
 async function wolfram(expr) {
-  let result;
+  let result = "";
 
   try {
     const resp = await axios.get(

@@ -10,6 +10,10 @@ function info({ bot, command_message, username }) {
       bot.chat(
         `Движение: ${bot.pathfinder.isMoving()}, Копание: ${bot.pathfinder.isMining()}, Строительство: ${bot.pathfinder.isBuilding()}`
       );
+      break;
+    case "worldedit":
+      bot.chat(`pos1: ${bot.pos1}, pos2: ${bot.pos2}`);
+      break;
   }
 }
 
