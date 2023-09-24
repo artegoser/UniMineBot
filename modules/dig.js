@@ -7,14 +7,19 @@ async function collectBLock(bot, names, data, count = 16) {
     const targets = [];
 
     for (let name of names) {
-      const block = data.blocksByName[name]?.id;
-      if (!block) bot.chat(`Не могу найти блок ${name} в справочнике`);
+      const blockType = data.blocksByName[name]?.id;
+      if (!blockType) bot.chat(`Не могу найти блок ${name} в справочнике`);
 
-      const blocks = bot.collectBlock.findFromVein(block);
+      const block = bot.findBlock({
+        matching: blockType.id,
+        maxDistance: 64,
+      });
 
       if (blocks.length === 0) {
         bot.chat(`Я не могу найти поблизости ${name}`);
       }
+
+      const blocks = bot.collectBlock.findFromVein(block);
 
       targets.push(...blocks);
     }
