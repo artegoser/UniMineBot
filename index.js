@@ -55,8 +55,17 @@ bot.once("spawn", () => {
         .trim()
         .split(" ");
 
-      if (username !== process.env.OWNER) {
-        AllEmmiter.emit(command_message[0], {
+      AllEmmiter.emit(command_message[0], {
+        bot,
+        message,
+        command_message: command_message.slice(1),
+        mcData,
+        username,
+        defaultMove,
+      });
+
+      if (username === process.env.OWNER) {
+        OwnerEmmiter.emit(command_message[0], {
           bot,
           message,
           command_message: command_message.slice(1),
@@ -65,15 +74,6 @@ bot.once("spawn", () => {
           defaultMove,
         });
       }
-
-      OwnerEmmiter.emit(command_message[0], {
-        bot,
-        message,
-        command_message: command_message.slice(1),
-        mcData,
-        username,
-        defaultMove,
-      });
     }
   });
 });
