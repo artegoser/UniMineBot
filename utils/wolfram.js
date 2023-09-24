@@ -13,10 +13,13 @@ async function wolfram(expr) {
     );
 
     console.log(JSON.stringify(resp.data));
+
+    let solutions = 0;
     for (let pod of resp.data.queryresult.pods) {
       if (pod.primary === true) {
-        result = `Решение: ${pod.subpods[0].plaintext}`;
-        break;
+        result += `Решение ${++solutions}: ${pod.subpods
+          .map((subpod) => `${subpod.plaintext}`)
+          .join("\n")}\n`;
       }
     }
   } catch (e) {
