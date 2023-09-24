@@ -18,6 +18,7 @@ emmiter.on("иди", require("./modules/movements"));
 emmiter.on("стоп", require("./modules/stop"));
 emmiter.on("инфо", require("./modules/info"));
 emmiter.on("копай", require("./modules/dig"));
+emmiter.on("порешай", require("./modules/math"));
 
 bot.loadPlugin(pathfinder);
 bot.loadPlugin(require("mineflayer-auto-eat").plugin);
