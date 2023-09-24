@@ -17,6 +17,7 @@ async function collectBLock(bot, names, data, count = 16) {
 
       if (!block) {
         bot.chat(`Я не могу найти поблизости ${name}`);
+        continue;
       }
 
       const blocks = bot.collectBlock.findFromVein(block);
