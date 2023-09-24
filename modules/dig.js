@@ -38,14 +38,16 @@ async function collectBLock(bot, names, data, defaultMove, count = 16) {
 
   bot.chat(`Найдено ${targets.length} (${names.join(", ")})`);
 
+  bot.chat("Начинаю копать");
+
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
-      bot.chat("Начинаю копать");
       await bot.collectBlock.collect(targets);
       bot.chat("Готово");
       break;
     } catch (err) {
+      targets.shift();
       console.log(err);
     }
   }
