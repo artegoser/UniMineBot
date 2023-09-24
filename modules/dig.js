@@ -1,3 +1,5 @@
+const { startGuard, stopGuard } = require("../utils/guard");
+
 function dig({ bot, command_message, mcData }) {
   collectBLock(bot, command_message[0].split(","), mcData, command_message[1]);
 }
@@ -29,11 +31,14 @@ async function collectBLock(bot, names, data, count = 16) {
 
   try {
     bot.chat("Начинаю копать");
+    startGuard(bot);
     await bot.collectBlock.collect(targets);
     bot.chat("Готово");
   } catch (err) {
     bot.chat("Я устал копать походу");
     console.log(err);
+  } finally {
+    stopGuard(bot);
   }
 }
 

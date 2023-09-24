@@ -23,6 +23,7 @@ bot.loadPlugin(pathfinder);
 bot.loadPlugin(require("mineflayer-auto-eat").plugin);
 bot.loadPlugin(require("mineflayer-tool").plugin);
 bot.loadPlugin(require("mineflayer-collectblock").plugin);
+bot.loadPlugin(require("mineflayer-pvp").plugin);
 
 bot.once("spawn", () => {
   bot.chat(process.env.INITIAL_COMMAND);
