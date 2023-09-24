@@ -10,6 +10,7 @@ async function wolfram(expr) {
       )}&appid=${process.env.WOLFRAM_APPID}&format=plaintext&output=JSON`
     );
 
+    console.log(JSON.stringify(resp.data));
     for (let pod of resp.data.queryresult.pods) {
       if (pod.primary === true) {
         result = `Решение: ${pod.subpods[0].plaintext}`;
