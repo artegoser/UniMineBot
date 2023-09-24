@@ -3,36 +3,32 @@ function dig({ bot, command_message, mcData }) {
 }
 
 async function collectBLock(bot, names, data, count = 16) {
-  const targets = [];
+  for (let i = 0; i < count; i++) {
+    const targets = [];
 
-  for (let name of names) {
-    const block = data.blocksByName[name]?.id;
-    if (!block) bot.chat(`Не могу найти блок ${name} в справочнике`);
+    for (let name of names) {
+      const block = data.blocksByName[name]?.id;
+      if (!block) bot.chat(`Не могу найти блок ${name} в справочнике`);
 
-    const blocks = bot.findBlocks({
-      matching: block,
-      maxDistance: 64,
-      count,
-    });
+      const blocks = bot.collectBlock.findFromVein(block);
 
-    if (blocks.length === 0) {
-      bot.chat(`Я не могу найти поблизости ${name}`);
+      if (blocks.length === 0) {
+        bot.chat(`Я не могу найти поблизости ${name}`);
+      }
+
+      targets.push(...blocks);
     }
 
-    for (let i = 0; i < Math.min(blocks.length, count); i++) {
-      targets.push(bot.blockAt(blocks[i]));
+    bot.chat(`Найдено ${targets.length} (${names.join(", ")})`);
+
+    try {
+      bot.chat(`Начинаю копать ${i} из ${count} структур`);
+      await bot.collectBlock.collect(targets);
+      bot.chat("Готово");
+    } catch (err) {
+      bot.chat("Я устал копать походу");
+      console.log(err);
     }
-  }
-
-  bot.chat(`Найдено ${targets.length} (${names.join(", ")})`);
-
-  try {
-    bot.chat("Начинаю копать");
-    await bot.collectBlock.collect(targets);
-    bot.chat("Готово");
-  } catch (err) {
-    bot.chat("Я устал копать походу");
-    console.log(err);
   }
 }
 
