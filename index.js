@@ -30,7 +30,7 @@ bot.once("spawn", () => {
   const defaultMove = new Movements(bot);
   defaultMove.canDig = false;
   bot.pathfinder.setMovements(defaultMove);
-  bot.pathfinder.tickTimeout = -1;
+  bot.pathfinder.tickTimeout = 1000 * 60 * 10;
 
   const mcData = require("minecraft-data")(bot.version);
 

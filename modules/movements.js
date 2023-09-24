@@ -10,7 +10,7 @@ function Movements({ bot, command_message, username }) {
 
   if (command_message[0] === "сюда" || command_message[0] === "к") {
     const targetPosition =
-      bot.players[command_message[0] ? command_message[0] : username]?.entity
+      bot.players[command_message[1] ? command_message[1] : username]?.entity
         ?.position;
     if (!targetPosition) {
       bot.chat("Не могу найти тебя.");
