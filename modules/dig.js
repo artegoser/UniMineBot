@@ -45,9 +45,9 @@ async function collectBLock(bot, names, data, defaultMove, count = 16) {
   } catch (err) {
     bot.chat("Устал копать походу");
     console.log(err);
+  } finally {
+    bot.pathfinder.setMovements(defaultMove);
   }
-
-  bot.pathfinder.setMovements(newmove);
 }
 
 module.exports = dig;

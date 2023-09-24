@@ -1,8 +1,17 @@
 const { evaluate } = require("mathjs");
+const wolfram = require("../utils/wolfram");
 
-function math({ bot, command_message }) {
+async function math({ bot, command_message }) {
   const expr = command_message.join("");
-  bot.chat(`${expr} = ${evaluate(expr)}`);
+  let result;
+
+  try {
+    result = `${expr} = ${evaluate(expr)}`;
+  } catch {
+    result = await wolfram(expr);
+  }
+
+  bot.chat(result);
 }
 
 module.exports = math;
