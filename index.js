@@ -57,6 +57,7 @@ bot.once("spawn", () => {
         command_message: command_message.slice(1),
         mcData,
         username,
+        defaultMove,
       });
     }
   });

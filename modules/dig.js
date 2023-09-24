@@ -1,8 +1,19 @@
-function dig({ bot, command_message, mcData }) {
-  collectBLock(bot, command_message[0].split(","), mcData, command_message[1]);
+const { Movements } = require("mineflayer-pathfinder");
+
+function dig({ bot, command_message, mcData, defaultMove }) {
+  collectBLock(
+    bot,
+    command_message[0].split(","),
+    mcData,
+    defaultMove,
+    command_message[1]
+  );
 }
 
-async function collectBLock(bot, names, data, count = 16) {
+async function collectBLock(bot, names, data, defaultMove, count = 16) {
+  const newmove = new Movements(bot);
+  bot.pathfinder.setMovements(newmove);
+
   const targets = [];
 
   for (let name of names) {
@@ -28,12 +39,15 @@ async function collectBLock(bot, names, data, count = 16) {
   bot.chat(`Найдено ${targets.length} (${names.join(", ")})`);
 
   try {
+    bot.chat("Начинаю копать");
     await bot.collectBlock.collect(targets);
     bot.chat("Готово");
   } catch (err) {
-    bot.chat(err.message);
+    bot.chat("Устал копать походу");
     console.log(err);
   }
+
+  bot.pathfinder.setMovements(newmove);
 }
 
 module.exports = dig;
