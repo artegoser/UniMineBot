@@ -12,18 +12,20 @@ const bot = mineflayer.createBot({
   port: Number(process.env.PORT),
 });
 
-const emmiter = new EventEmitter();
+const OwnerEmmiter = new EventEmitter();
+const AllEmmiter = new EventEmitter();
 
-emmiter.on("иди", require("./modules/movements"));
-emmiter.on("стоп", require("./modules/stop"));
-emmiter.on("инфо", require("./modules/info"));
-emmiter.on("копай", require("./modules/dig"));
-emmiter.on("порешай", require("./modules/math"));
+AllEmmiter.on("инфо", require("./modules/info"));
+AllEmmiter.on("порешай", require("./modules/math"));
 
-emmiter.on("pos1", ({ bot, username }) => {
+OwnerEmmiter.on("иди", require("./modules/movements"));
+OwnerEmmiter.on("стоп", require("./modules/stop"));
+OwnerEmmiter.on("копай", require("./modules/dig"));
+
+OwnerEmmiter.on("pos1", ({ bot, username }) => {
   bot.pos1 = bot.players[username].entity.position;
 });
-emmiter.on("pos2", ({ bot, username }) => {
+OwnerEmmiter.on("pos2", ({ bot, username }) => {
   bot.pos2 = bot.players[username].entity.position;
 });
 
@@ -43,22 +45,28 @@ bot.once("spawn", () => {
   const mcData = require("minecraft-data")(bot.version);
 
   bot.on("chat", (username, message) => {
-    if (username === bot.username || username !== process.env.OWNER) {
+    if (username === bot.username) {
       return;
     }
 
     if (message.toLowerCase().startsWith(process.env.USER_NAME.toLowerCase())) {
-      if (username !== process.env.OWNER) {
-        bot.chat(`Я слушаю только ${process.env.OWNER}`);
-        return;
-      }
-
       let command_message = message
         .replace(process.env.USER_NAME, "")
         .trim()
         .split(" ");
 
-      emmiter.emit(command_message[0], {
+      if (username !== process.env.OWNER) {
+        AllEmmiter.emit(command_message[0], {
+          bot,
+          message,
+          command_message: command_message.slice(1),
+          mcData,
+          username,
+          defaultMove,
+        });
+      }
+
+      OwnerEmmiter.emit(command_message[0], {
         bot,
         message,
         command_message: command_message.slice(1),
