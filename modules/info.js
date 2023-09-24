@@ -1,4 +1,4 @@
-const { generate3DCubeBy2Points } = require("../utils/3dGeom");
+const { Volume } = require("../utils/3dGeom");
 
 function info({ bot, command_message, username }) {
   switch (command_message[0]) {
@@ -24,9 +24,7 @@ function info({ bot, command_message, username }) {
       bot.chat(`Моя версия: v${require("../package.json").version}`);
       break;
     case "площадь":
-      bot.chat(
-        `Площадь: ${generate3DCubeBy2Points(bot.pos1, bot.pos2).length}`
-      );
+      bot.chat(`Площадь: ${Volume(bot.pos1, bot.pos2)}`);
   }
 }
 
