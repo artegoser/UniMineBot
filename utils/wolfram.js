@@ -7,7 +7,9 @@ async function wolfram(expr) {
     const resp = await axios.get(
       `http://api.wolframalpha.com/v2/query?input=${encodeURIComponent(
         expr
-      )}&appid=${process.env.WOLFRAM_APPID}&format=plaintext&output=JSON`
+      )}&appid=${encodeURIComponent(
+        process.env.WOLFRAM_APPID
+      )}&format=plaintext&output=JSON`
     );
 
     console.log(JSON.stringify(resp.data));
