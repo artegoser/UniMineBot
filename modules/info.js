@@ -1,3 +1,5 @@
+const { generate3DCubeBy2Points } = require("../utils/3dGeom");
+
 function info({ bot, command_message, username }) {
   switch (command_message[0]) {
     case "привет":
@@ -12,10 +14,17 @@ function info({ bot, command_message, username }) {
       );
       break;
     case "worldedit":
-      bot.chat(`pos1: ${bot.pos1}, pos2: ${bot.pos2}`);
+      bot.chat(
+        `pos1: (${bot.pos1.join(", ")}), pos2: (${bot.pos2.join(", ")})`
+      );
       break;
     case "версия":
       bot.chat(`Моя версия: v${require("../package.json").version}`);
+      break;
+    case "площадь":
+      bot.chat(
+        `Площадь: ${generate3DCubeBy2Points(bot.pos1, bot.pos2).length}`
+      );
   }
 }
 
