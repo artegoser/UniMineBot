@@ -68,3 +68,7 @@ bot.on("message", (message) => {
 
 bot.on("kicked", console.log);
 bot.on("error", console.log);
+
+process.on("uncaughtException", function (err) {
+  console.error(err);
+});
