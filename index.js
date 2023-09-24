@@ -23,10 +23,10 @@ OwnerEmmiter.on("стоп", require("./modules/stop"));
 OwnerEmmiter.on("копай", require("./modules/dig"));
 
 OwnerEmmiter.on("pos1", ({ bot, username }) => {
-  bot.pos1 = bot.players[username].entity.position;
+  bot.pos1 = JSON.parse(JSON.stringify(bot.players[username].entity.position));
 });
 OwnerEmmiter.on("pos2", ({ bot, username }) => {
-  bot.pos2 = bot.players[username].entity.position;
+  bot.pos2 = JSON.parse(JSON.stringify(bot.players[username].entity.position));
 });
 
 bot.loadPlugin(pathfinder);
