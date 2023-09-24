@@ -15,7 +15,9 @@ function info({ bot, command_message, username }) {
       break;
     case "worldedit":
       bot.chat(
-        `pos1: (${bot.pos1.join(", ")}), pos2: (${bot.pos2.join(", ")})`
+        `pos1: (${JSON.stringify(bot.pos1)}), pos2: (${JSON.stringify(
+          bot.pos2
+        )})`
       );
       break;
     case "версия":
