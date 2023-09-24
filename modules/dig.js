@@ -15,7 +15,7 @@ async function collectBLock(bot, names, data, count = 16) {
         maxDistance: 64,
       });
 
-      if (block.length === 0) {
+      if (!block) {
         bot.chat(`Я не могу найти поблизости ${name}`);
       }
 
