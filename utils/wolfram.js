@@ -7,7 +7,7 @@ async function wolfram(expr) {
     const resp = await axios.get(
       `http://api.wolframalpha.com/v2/query?input=${encodeURI(expr)}&appid=${
         process.env.WOLFRAM_APPID
-      }`
+      }&format=plaintext&output=JSON`
     );
 
     for (let pod of resp.data.queryresult.pods) {
