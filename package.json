@@ -18,5 +18,8 @@
   "keywords": [],
   "author": "artegoser",
   "license": "MIT",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "eslint": "^8.50.0"
+  }
 }
