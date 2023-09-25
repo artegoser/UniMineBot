@@ -2,6 +2,10 @@ const {
   goals: { GoalBlock, GoalXZ, GoalNear },
 } = require("mineflayer-pathfinder");
 function Movements({ bot, command_message, username }) {
+  while (bot.pathfinder.isMoving()) {
+    continue;
+  }
+
   let x, y, z;
   const { position } = bot.entity;
   x = position.x;
