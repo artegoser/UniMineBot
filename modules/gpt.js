@@ -49,7 +49,7 @@ async function gpt(args) {
     content: response,
   });
 
-  const commands = response.split("\n").slice(1);
+  const commands = response.split("\n");
 
   for (let command of commands) {
     const args2 = command.split(" ");
@@ -57,6 +57,8 @@ async function gpt(args) {
       ...args,
       command_message: args2.slice(1),
     };
+
+    console.log(command);
 
     switch (args2[0]) {
       case "инфо":
