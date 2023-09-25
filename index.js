@@ -27,6 +27,7 @@ OwnerEmitter.on("pos1", require("./modules/pos1"));
 OwnerEmitter.on("pos2", require("./modules/pos2"));
 
 OwnerEmitter.on("gpt", require("./modules/gpt"));
+OwnerEmitter.on("clear-gpt", require("./modules/clear-gpt"));
 
 bot.loadPlugin(pathfinder);
 bot.loadPlugin(require("mineflayer-auto-eat").plugin);

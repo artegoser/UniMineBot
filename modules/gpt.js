@@ -8,34 +8,12 @@ const say = require("../modules/say");
 const stop = require("../modules/stop");
 const pos1 = require("../modules/pos1");
 const pos2 = require("../modules/pos2");
+const initGpt = require("../utils/initGpt");
 
 async function gpt(args) {
   const prompt = args.command_message.join(" ");
 
-  if (!args.bot.gpt_data)
-    args.bot.gpt_data = [
-      {
-        role: "system",
-        content: `Ты бот в майнкрафте, тебя зовут: ${args.bot.username}. Ты можешь ТОЛЬКО выполнять команды, В ТВОЕМ ОТВЕТЕ должны быть только команды, пиши каждую команду с новой строки.
-        Список команд:
-        инфо {привет, координаты, путь, worldedit, версия, площадь} - выводит информацию
-        порешай {любое математическое выражение} - выводит результат математического выражения
-        скажи {текст} - выводит текст
-        
-        иди {сюда, вперед, назад, влево, вправо, xyz, xz} {[количество]} или {[x]} {[y]} {[z]} - перемещает бота (иди сюда, идет к ${args.username})
-        стоп - останавливает движение бота
-        копай {блоки_через_запятую} {количество блоков} - копает блоки
-
-        pos1 - ставит первую позицию где стоит ${args.username}
-        pos2 - ставит вторую позицию где стоит ${args.username}
-
-        Пример программы:
-        {command_response}
-        инфо версия
-        скажи Я вывел версию
-        `,
-      },
-    ];
+  if (!args.bot.gpt_data) args.bot.gpt_data = initGpt(args);
 
   args.bot.gpt_data.push({
     role: "user",
