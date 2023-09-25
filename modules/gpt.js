@@ -16,7 +16,7 @@ async function gpt(args) {
     args.bot.gpt_data = [
       {
         role: "system",
-        content: `Ты бот в майнкрафте, тебя зовут: ${args.bot.username}. Ты можешь выполнять команды, (для того чтобы их использовать нужно начать сообщение с "{command_response}" и потом писать их каждую с новой строки)
+        content: `Ты бот в майнкрафте, тебя зовут: ${args.bot.username}. Ты можешь ТОЛЬКО выполнять команды, В ТВОЕМ ОТВЕТЕ должны быть только команды, пиши каждую команду с новой строки.
         Список команд:
         инфо {привет, координаты, путь, worldedit, версия, площадь} - выводит информацию
         порешай {любое математическое выражение} - выводит результат математического выражения
@@ -49,48 +49,44 @@ async function gpt(args) {
     content: response,
   });
 
-  if (response.startsWith("{command_response}")) {
-    args.bot.chat("Выполняю команды");
+  const commands = response.split("\n").slice(1);
 
-    const commands = response.split("\n").slice(1);
+  for (let command of commands) {
+    const args2 = command.split(" ");
+    const argsToCommand = {
+      ...args,
+      command_message: args2.slice(1),
+    };
 
-    for (let command of commands) {
-      const args2 = command.split(" ");
-      const argsToCommand = {
-        ...args,
-        command_message: args2.slice(1),
-      };
-
-      switch (args2[0]) {
-        case "инфо":
-          await info(argsToCommand);
-          break;
-        case "порешай":
-          await math(argsToCommand);
-          break;
-        case "скажи":
-          await say(argsToCommand);
-          break;
-        case "иди":
-          await movements(argsToCommand);
-          break;
-        case "стоп":
-          await stop(argsToCommand);
-          break;
-        case "копай":
-          await dig(argsToCommand);
-          break;
-        case "pos1":
-          await pos1(argsToCommand);
-          break;
-        case "pos2":
-          await pos2(argsToCommand);
-          break;
-        default:
-          break;
-      }
+    switch (args2[0]) {
+      case "инфо":
+        await info(argsToCommand);
+        break;
+      case "порешай":
+        await math(argsToCommand);
+        break;
+      case "скажи":
+        await say(argsToCommand);
+        break;
+      case "иди":
+        await movements(argsToCommand);
+        break;
+      case "стоп":
+        await stop(argsToCommand);
+        break;
+      case "копай":
+        await dig(argsToCommand);
+        break;
+      case "pos1":
+        await pos1(argsToCommand);
+        break;
+      case "pos2":
+        await pos2(argsToCommand);
+        break;
+      default:
+        break;
     }
-  } else args.bot.chat(response);
+  }
 }
 
 module.exports = gpt;
