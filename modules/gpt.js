@@ -30,7 +30,10 @@ async function gpt(args) {
   const commands = response.split("\n");
 
   for (let command of commands) {
-    if (command.startsWith("<!DOCTYPE")) break;
+    if (command.startsWith("<!DOCTYPE")) {
+      args.bot.chat("Что то пошло не так");
+      break;
+    }
     const args2 = command.split(" ");
     const argsToCommand = {
       ...args,
