@@ -28,6 +28,11 @@ async function gpt(args) {
 
         pos1 - ставит первую позицию где стоит ${args.username}
         pos2 - ставит вторую позицию где стоит ${args.username}
+
+        Пример программы:
+        {command_response}
+        инфо версия
+        скажи Я вывел версию
         `,
       },
     ];
