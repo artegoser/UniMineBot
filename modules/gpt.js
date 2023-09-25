@@ -64,7 +64,7 @@ async function gpt(args) {
         await pos2(argsToCommand);
         break;
       default:
-        break;
+        args.bot.chat(command);
     }
   }
 }
