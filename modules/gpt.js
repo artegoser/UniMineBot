@@ -55,7 +55,6 @@ async function gpt(args) {
     const commands = response.split("\n").slice(1);
 
     for (let command of commands) {
-      args.bot.chat(`Выполняется: "${command}"`);
       const args2 = command.split(" ");
       const argsToCommand = {
         ...args,
