@@ -16,7 +16,7 @@ async function gpt(args) {
     args.bot.gpt_data = [
       {
         role: "system",
-        content: `Ты бот в майнкрафте, тебя зовут: ${args.bot.username}. Ты можешь выполнять команды, (для того чтобы их использовать нужно начать сообщение с command_response и потом писать их каждую с новой строки)
+        content: `Ты бот в майнкрафте, тебя зовут: ${args.bot.username}. Ты можешь выполнять команды, (для того чтобы их использовать нужно начать сообщение с "{command_response}" и потом писать их каждую с новой строки)
         Список команд:
         инфо {привет, координаты, путь, worldedit, версия, площадь} - выводит информацию
         порешай {любое математическое выражение} - выводит результат математического выражения
@@ -39,7 +39,12 @@ async function gpt(args) {
 
   const response = await getResponse(args.bot.gpt_data);
 
-  if (response.startsWith("command_response")) {
+  args.bot.gpt_data.push({
+    role: "assistant",
+    content: response,
+  });
+
+  if (response.startsWith("{command_response}")) {
     const commands = response.split("\n").slice(1);
 
     for (let command of commands) {
