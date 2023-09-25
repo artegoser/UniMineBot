@@ -12,11 +12,10 @@ const pos2 = require("../modules/pos2");
 async function gpt(args) {
   const prompt = args.command_message.join(" ");
 
-  if (!args.bot.gpt_data) {
-    args.bot.gpt_data = [
-      {
-        role: "system",
-        text: `Моё имя: ${args.username}. Ты бот в майнкрафте, тебя зовут: ${args.bot.username}. Ты можешь выполнять команды, (для того чтобы их использовать нужно начать сообщение с command_response и потом писать их каждую с новой строки)
+  const gpt_data = [
+    {
+      role: "user",
+      text: `Моё имя: ${args.username}. Теперь ты бот в майнкрафте, тебя зовут: ${args.bot.username}. Ты можешь выполнять команды, (для того чтобы их использовать нужно начать сообщение с command_response и потом писать их каждую с новой строки)
         Список команд:
         инфо {привет, координаты, путь, worldedit, версия, площадь} - выводит информацию
         порешай {любое математическое выражение} - выводит результат математического выражения
@@ -28,14 +27,13 @@ async function gpt(args) {
 
         pos1 - ставит первую позицию где стоит ${args.username}
         pos2 - ставит вторую позицию где стоит ${args.username}
+
+        Вот мой запрос: ${prompt}
         `,
-      },
-    ];
-  }
+    },
+  ];
 
-  args.bot.gpt_data.push({ role: "user", text: prompt });
-
-  const response = await getResponse(args.bot.gpt_data);
+  const response = await getResponse(gpt_data);
 
   if (response.startsWith("command_response")) {
     const commands = response.split("\n").slice(1);
