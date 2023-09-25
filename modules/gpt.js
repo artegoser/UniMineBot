@@ -22,7 +22,7 @@ async function gpt(args) {
         порешай {любое математическое выражение} - выводит результат математического выражения
         скажи {текст} - выводит текст
         
-        иди {сюда, вперед, назад, влево, вправо, xyz, xz} - перемещает бота (иди сюда, идет к ${args.username})
+        иди {сюда, вперед, назад, влево, вправо, xyz, xz} {[количество]} или {[x]} {[y]} {[z]} - перемещает бота (иди сюда, идет к ${args.username})
         стоп - останавливает движение бота
         копай {блоки_через_запятую} {количество блоков} - копает блоки
 
@@ -50,9 +50,12 @@ async function gpt(args) {
   });
 
   if (response.startsWith("{command_response}")) {
+    args.bot.chat("Выполняю команды");
+
     const commands = response.split("\n").slice(1);
 
     for (let command of commands) {
+      args.bot.chat(`Выполняется: "${command}"`);
       const args2 = command.split(" ");
       const argsToCommand = {
         ...args,
