@@ -12,22 +12,21 @@ const bot = mineflayer.createBot({
   port: Number(process.env.PORT),
 });
 
-const OwnerEmmiter = new EventEmitter();
-const AllEmmiter = new EventEmitter();
+const OwnerEmitter = new EventEmitter();
+const AllEmitter = new EventEmitter();
 
-AllEmmiter.on("инфо", require("./modules/info"));
-AllEmmiter.on("порешай", require("./modules/math"));
+AllEmitter.on("инфо", require("./modules/info"));
+AllEmitter.on("порешай", require("./modules/math"));
+AllEmitter.on("скажи", require("./modules/say"));
 
-OwnerEmmiter.on("иди", require("./modules/movements"));
-OwnerEmmiter.on("стоп", require("./modules/stop"));
-OwnerEmmiter.on("копай", require("./modules/dig"));
+OwnerEmitter.on("иди", require("./modules/movements"));
+OwnerEmitter.on("стоп", require("./modules/stop"));
+OwnerEmitter.on("копай", require("./modules/dig"));
 
-OwnerEmmiter.on("pos1", ({ bot, username }) => {
-  bot.pos1 = { ...bot.players[username].entity.position };
-});
-OwnerEmmiter.on("pos2", ({ bot, username }) => {
-  bot.pos2 = { ...bot.players[username].entity.position };
-});
+OwnerEmitter.on("pos1", require("./modules/pos1"));
+OwnerEmitter.on("pos2", require("./modules/pos2"));
+
+OwnerEmitter.on("gpt", require("./modules/gpt"));
 
 bot.loadPlugin(pathfinder);
 bot.loadPlugin(require("mineflayer-auto-eat").plugin);
@@ -55,23 +54,26 @@ bot.once("spawn", () => {
         .trim()
         .split(" ");
 
-      AllEmmiter.emit(command_message[0], {
+      AllEmitter.emit(command_message[0], {
         bot,
         message,
         command_message: command_message.slice(1),
         mcData,
         username,
         defaultMove,
+        AllEmitter,
       });
 
       if (username === process.env.OWNER) {
-        OwnerEmmiter.emit(command_message[0], {
+        OwnerEmitter.emit(command_message[0], {
           bot,
           message,
           command_message: command_message.slice(1),
           mcData,
           username,
           defaultMove,
+          OwnerEmitter,
+          AllEmitter,
         });
       }
     }
