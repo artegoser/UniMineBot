@@ -1,20 +1,22 @@
 const axios = require("axios");
 const process = require("process");
-async function getResponse(data) {
+
+async function getResponse(messages) {
   try {
     const response = await axios.request({
       method: "POST",
-      url: `https://${process.env.GPT_API_HOST}/`,
+      url: `${process.env.GPT_BASE}/chat/completions`,
       headers: {
         "content-type": "application/json",
-        "X-RapidAPI-Key": process.env.GPT_API_KEY,
-        "X-RapidAPI-Host": process.env.GPT_API_HOST,
       },
-      data,
+      data: {
+        model: "gpt-3.5-turbo",
+        messages,
+        temperature: 0.7,
+      },
     });
 
-    console.log(response.data);
-    return response.data.text;
+    return response.data.choices[0].message.content;
   } catch (error) {
     console.log(error);
     return "Ошибка";
