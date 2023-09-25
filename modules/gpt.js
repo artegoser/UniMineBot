@@ -30,6 +30,7 @@ async function gpt(args) {
   const commands = response.split("\n");
 
   for (let command of commands) {
+    if (command.startsWith("<!DOCTYPE")) break;
     const args2 = command.split(" ");
     const argsToCommand = {
       ...args,
