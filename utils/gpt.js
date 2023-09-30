@@ -5,7 +5,7 @@ async function getResponse(messages) {
   try {
     const response = await axios.request({
       method: "POST",
-      url: `${process.env.GPT_BASE}/chat/completions`,
+      url: `${process.env.NEXULAPI_BASE}/chat`,
       headers: {
         "content-type": "application/json",
       },
